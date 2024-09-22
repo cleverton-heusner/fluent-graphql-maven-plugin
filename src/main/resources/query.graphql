@@ -1,0 +1,35 @@
+query {
+  getPost {
+    postId
+    postTitle
+    postText
+    postDatePublished
+    comments {
+      commentsId
+      commentsText
+      commentsDatePublished
+      author {
+        authorId
+        authorName
+        authorEmail
+        authorProfilePicture
+        authorJoinedDate
+        friends {
+          friendsId
+          friendsName
+          friendsProfilePicture
+          mutualFriends {
+            mutualFriendsId
+            mutualFriendsName
+          }
+        }
+      }
+    }
+    postViews
+    postLikes
+    popularity {
+      likes
+      dislikes
+    }
+  }
+}
