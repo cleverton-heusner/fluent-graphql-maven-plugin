@@ -37,40 +37,46 @@ public class Main {
         queryDefinition.getSelectionSet()
                 .getSelections()
                 .stream()
-                .filter(field -> field instanceof Field)
-                .filter(fieldWithChildren -> ((Field) fieldWithChildren).getSelectionSet() != null)
+                .filter(node -> node instanceof Field)
+                .filter(n -> isSubTree((Field) n))
                 .findFirst()
-                .map(rootField -> (Field) rootField)
-                .ifPresent(Main::convertQueryToBean);
+                .map(rootNode -> (Field) rootNode)
+                .ifPresent(node -> generateQueryNodeClass(
+                        node,
+                        QueryNodeClass.ROOT_NODE_NAME)
+                );
     }
 
-    private static void convertQueryToBean(final Field field) {
-        String childFieldWithDescendantsName = "";
-        final StringBuilder clazz = new StringBuilder("public class ");
-        clazz.append(field.getName())
-                .append(" {\n");
+    private static void generateQueryNodeClass(final Field node,
+                                               final String parentNodeName) {
 
-        for (final Selection<?> selection : field.getSelectionSet().getSelections()) {
-            if (selection instanceof final Field f) {
-                if (f.getSelectionSet() != null) {
-                    childFieldWithDescendantsName = f.getName();
-                    convertQueryToBean(f);
-                    clazz.append("private ")
-                            .append(childFieldWithDescendantsName)
-                            .append(" ")
-                            .append(childFieldWithDescendantsName)
-                            .append(";\n");
+        final var queryNodeClass = new QueryNodeClass(node.getName());
+        final var queryNodeClassConstructor = new QueryNodeClass.Constructor(node.getName());
+        queryNodeClassConstructor.initializeParentNode(parentNodeName);
+
+        for (final Selection<?> selection : node.getSelectionSet().getSelections()) {
+            if (selection instanceof final Field n) {
+                if (isSubTree(n)) {
+                    generateQueryNodeClass(n, node.getName());
+
+                    queryNodeClass.addSubTree(n.getName());
+                    queryNodeClass.addParentNode(parentNodeName);
+                    queryNodeClassConstructor.instantiateNode(n.getName());
                 }
                 else {
-                    clazz.append("private boolean ")
-                            .append(f.getName())
-                            .append(";\n");
+                    queryNodeClass.addLeafNode(n.getName());
                 }
             }
         }
 
-        clazz.append("}");
+        queryNodeClassConstructor.close();
+        queryNodeClass.addConstructor(queryNodeClassConstructor)
+                .close();
 
-        System.out.println(clazz);
+        System.out.println(queryNodeClass);
+    }
+
+    private static boolean isSubTree(final Field node) {
+        return node.getSelectionSet() != null;
     }
 }
