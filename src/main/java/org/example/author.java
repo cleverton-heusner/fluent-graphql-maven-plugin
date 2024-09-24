@@ -8,7 +8,7 @@ public class author {
     private boolean email;
     private boolean profilePicture;
     private boolean joinedDate;
-    private friends friends;
+    private final friends friends;
 
     public author(comments comments) {
         this.comments = comments;

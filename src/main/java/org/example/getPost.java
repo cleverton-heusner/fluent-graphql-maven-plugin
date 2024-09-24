@@ -8,7 +8,7 @@ public class getPost {
     private boolean datePublished;
     private boolean views;
     private boolean likes;
-    private comments comments;
+    private final comments comments;
 
     public getPost() {
         comments = new comments(this);

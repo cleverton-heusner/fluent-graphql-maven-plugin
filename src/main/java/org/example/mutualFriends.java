@@ -43,7 +43,8 @@ public class mutualFriends {
     @Override
     public String toString() {
         return "mutualFriends{" +
-                "id=" + id +
+                "friends=" + friends +
+                ", id=" + id +
                 ", name=" + name +
                 '}';
     }

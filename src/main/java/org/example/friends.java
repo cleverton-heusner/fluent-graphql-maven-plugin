@@ -6,7 +6,7 @@ public class friends {
     private boolean id;
     private boolean name;
     private boolean profilePicture;
-    private mutualFriends mutualFriends;
+    private final mutualFriends mutualFriends;
 
     public friends(author author) {
         this.author = author;

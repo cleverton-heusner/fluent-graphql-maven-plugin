@@ -6,7 +6,7 @@ public class comments {
     private boolean id;
     private boolean text;
     private boolean datePublished;
-    private author author;
+    private final author author;
 
     public comments(getPost getPost) {
         this.getPost = getPost;

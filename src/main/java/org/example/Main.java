@@ -5,10 +5,15 @@ import graphql.language.Field;
 import graphql.language.OperationDefinition;
 import graphql.language.Selection;
 import graphql.parser.Parser;
+import org.example.utils.Method;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.example.utils.Capitalizer.capitalize;
 
 public class Main {
 
@@ -50,9 +55,18 @@ public class Main {
     private static void generateQueryNodeClass(final Field node,
                                                final String parentNodeName) {
 
-        final var queryNodeClass = new QueryNodeClass(node.getName());
-        final var queryNodeClassConstructor = new QueryNodeClass.Constructor(node.getName());
-        queryNodeClassConstructor.initializeParentNode(parentNodeName);
+        final List<String> leafNodesNames = new ArrayList<>();
+        final List<String> subTreesNames = new ArrayList<>();
+        final var queryNodeClass = new QueryNodeClass(node.getName(), parentNodeName);
+
+        final var queryNodeClassConstructorBuilder = new Method.Builder()
+                .addPublicModifier()
+                .withParams(parentNodeName)
+                .named(queryNodeClass.getNodeName());
+
+        if (!parentNodeName.isEmpty()) {
+            queryNodeClassConstructorBuilder.addStatement("this." + parentNodeName, parentNodeName);
+        }
 
         for (final Selection<?> selection : node.getSelectionSet().getSelections()) {
             if (selection instanceof final Field n) {
@@ -60,17 +74,25 @@ public class Main {
                     generateQueryNodeClass(n, node.getName());
 
                     queryNodeClass.addSubTree(n.getName());
+                    subTreesNames.add(n.getName());
                     queryNodeClass.addParentNode(parentNodeName);
-                    queryNodeClassConstructor.instantiateNode(n.getName());
+                    queryNodeClassConstructorBuilder.addStatement(n.getName() +
+                            " = new " +
+                            capitalize(n.getName()) +
+                            "(this)");
                 }
                 else {
                     queryNodeClass.addLeafNode(n.getName());
+                    leafNodesNames.add(n.getName());
                 }
             }
         }
 
-        queryNodeClassConstructor.close();
-        queryNodeClass.addConstructor(queryNodeClassConstructor)
+        queryNodeClass.addConstructor(queryNodeClassConstructorBuilder.build())
+                .addLeafNodeSelectorMethods(leafNodesNames)
+                .addLeafNodeSkipperMethods(leafNodesNames)
+                .addAllNodesSelectorMethod(leafNodesNames, subTreesNames)
+                .addSubTreeSelectorMethod(subTreesNames)
                 .close();
 
         System.out.println(queryNodeClass);
