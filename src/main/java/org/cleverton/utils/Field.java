@@ -1,6 +1,6 @@
-package org.example.utils;
+package org.cleverton.utils;
 
-import static org.example.utils.Capitalizer.capitalize;
+import static org.cleverton.utils.Capitalizer.capitalize;
 
 public class Field {
 
@@ -13,43 +13,47 @@ public class Field {
     private String type;
 
     public static class Builder {
-        private final Field method;
+        private final Field field;
 
         public Builder() {
-            this.method = new Field();
+            this.field = new Field();
         }
 
         public Builder named(final String name) {
-            method.name = name;
+            field.name = name;
             return this;
         }
 
         public Builder addPrivateModifier() {
-            method.modifier = "private";
+            field.modifier = "private";
             return this;
         }
 
         public Builder addPrivateFinalModifier() {
-            method.modifier = "private final";
+            field.modifier = "private final";
             return this;
         }
 
         public Builder withBooleanType() {
-            method.type = "boolean";
+            field.type = "boolean";
             return this;
         }
 
         public Builder withType(final String type) {
-            method.type = capitalize(type);
+            field.type = capitalize(type);
             return this;
         }
 
         public Field build() {
-            return method;
+            return field;
         }
     }
 
-    public String writeToConsole() {
+    public String getName() {
+        return name;
+    }
+
+    public String render() {
         return new StringBuilder("\n")
                 .append(INDENTATION)
                 .append(modifier)

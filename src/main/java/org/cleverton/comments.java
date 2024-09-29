@@ -1,4 +1,4 @@
-package org.example;
+package org.cleverton;
 
 public class comments {
 
@@ -6,11 +6,11 @@ public class comments {
     private boolean id;
     private boolean text;
     private boolean datePublished;
-    private final author author;
+    private final authorTest author;
 
     public comments(getPost getPost) {
         this.getPost = getPost;
-        author = new author(this);
+        author = new authorTest(this);
     }
 
     public comments selectId() {
@@ -51,7 +51,7 @@ public class comments {
         return this;
     }
 
-    public author fromAuthor() {
+    public authorTest fromAuthor() {
         return author;
     }
 

@@ -1,6 +1,8 @@
-package org.example.utils;
+package org.cleverton.utils;
 
-import static org.example.utils.Capitalizer.capitalize;
+import static org.cleverton.utils.Capitalizer.capitalize;
+import static org.cleverton.utils.Formatting.DOUBLE_INDENTATION;
+import static org.cleverton.utils.Formatting.INDENTATION;
 
 public class Method {
 
@@ -37,14 +39,9 @@ public class Method {
             return this;
         }
 
-        public Builder returns(final Class<?> clazz) {
-            method.returns = clazz.getSimpleName();
-            return this;
-        }
-
         public Builder addStatement(final String statement) {
             method.statements.append("\n")
-                    .append("        ")
+                    .append(DOUBLE_INDENTATION.getValue())
                     .append(statement)
                     .append(";");
             return this;
@@ -52,7 +49,7 @@ public class Method {
 
         public Builder addStatement(final String var, final String val) {
             method.statements.append("\n")
-                    .append("        ")
+                    .append(DOUBLE_INDENTATION.getValue())
                     .append(var)
                     .append(" = ")
                     .append(val)
@@ -62,7 +59,7 @@ public class Method {
 
         public Builder addStatementReturning(final String statement) {
             method.statements.append("\n")
-                    .append("        ")
+                    .append(DOUBLE_INDENTATION.getValue())
                     .append("return ")
                     .append(statement)
                     .append(";");
@@ -70,7 +67,7 @@ public class Method {
         }
 
         public Builder addPublicModifier() {
-            method.modifier = "    public";
+            method.modifier = "public";
             return this;
         }
 
@@ -87,8 +84,10 @@ public class Method {
         }
     }
 
-    public String writeToConsole() {
-        return new StringBuilder("\n\n").append(modifier)
+    public String render() {
+        return new StringBuilder("\n\n")
+                .append(INDENTATION.getValue())
+                .append(modifier)
                 .append(returns.isEmpty() ? "" : " ")
                 .append(returns)
                 .append(" ")
@@ -99,7 +98,7 @@ public class Method {
                 .append(" {")
                 .append(statements)
                 .append("\n")
-                .append("    ")
+                .append(INDENTATION.getValue())
                 .append("}")
                 .toString();
     }

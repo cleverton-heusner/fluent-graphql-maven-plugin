@@ -1,6 +1,6 @@
-package org.example;
+package org.cleverton;
 
-public class author {
+public class authorTest {
 
     private final comments comments;
     private boolean id;
@@ -10,62 +10,62 @@ public class author {
     private boolean joinedDate;
     private final friends friends;
 
-    public author(comments comments) {
+    public authorTest(comments comments) {
         this.comments = comments;
         friends = new friends(this);
     }
 
-    public author selectId() {
+    public authorTest selectId() {
         id = true;
         return this;
     }
 
-    public author ignoreId() {
+    public authorTest ignoreId() {
         id = false;
         return this;
     }
 
-    public author selectName() {
+    public authorTest selectName() {
         name = true;
         return this;
     }
 
-    public author ignoreName() {
+    public authorTest ignoreName() {
         name = false;
         return this;
     }
 
-    public author selectEmail() {
+    public authorTest selectEmail() {
         email = true;
         return this;
     }
 
-    public author ignoreEmail() {
+    public authorTest ignoreEmail() {
         email = false;
         return this;
     }
 
-    public author selectProfilePicture() {
+    public authorTest selectProfilePicture() {
         profilePicture = true;
         return this;
     }
 
-    public author ignoreProfilePicture() {
+    public authorTest ignoreProfilePicture() {
         profilePicture = false;
         return this;
     }
 
-    public author selectJoinedDate() {
+    public authorTest selectJoinedDate() {
         joinedDate = true;
         return this;
     }
 
-    public author ignoreJoinedDate() {
+    public authorTest ignoreJoinedDate() {
         joinedDate = false;
         return this;
     }
 
-    public author selectAllFields() {
+    public authorTest selectAllFields() {
         id = true;
         name = true;
         email = true;

@@ -1,4 +1,4 @@
-package org.example.utils;
+package org.cleverton.utils;
 
 public class Capitalizer {
 

@@ -1,14 +1,14 @@
-package org.example;
+package org.cleverton;
 
 public class friends {
 
-    private final author author;
+    private final authorTest author;
     private boolean id;
     private boolean name;
     private boolean profilePicture;
     private final mutualFriends mutualFriends;
 
-    public friends(author author) {
+    public friends(authorTest author) {
         this.author = author;
         mutualFriends = new mutualFriends(this);
     }
@@ -55,7 +55,7 @@ public class friends {
         return mutualFriends;
     }
 
-    public author endFriends() {
+    public authorTest endFriends() {
         return author;
     }
 

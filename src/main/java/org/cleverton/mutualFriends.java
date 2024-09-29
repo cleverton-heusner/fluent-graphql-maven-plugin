@@ -1,4 +1,4 @@
-package org.example;
+package org.cleverton;
 
 public class mutualFriends {
 
