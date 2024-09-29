@@ -6,24 +6,32 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static java.io.File.separatorChar;
 
-@Mojo(name = "graphql-to-bean", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class GraphQlToBeanMojo extends AbstractMojo {
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+public class FluentGraphQlMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
-    MavenProject project;
+    private MavenProject project;
 
-    @Parameter(defaultValue = "${project.basedir}/src/main/resources/query.graphql", required = true)
+    @Parameter(defaultValue = "${project.basedir}/src/main/resources/", required = true)
     private File graphqlQueryFile;
 
     @Parameter(defaultValue = "${project.build.directory}/generated-sources", required = true)
     private File generatedSourcePath;
+
+    @Parameter(property = "graphQlFileName", required = true)
+    private String graphQlFileName;
+
+    @Inject
+    private GraphQlToBeanConverter graphQlToBeanConverter;
 
     @Override
     public void execute() {
@@ -35,7 +43,7 @@ public class GraphQlToBeanMojo extends AbstractMojo {
         final boolean isPackageCreated = graphQlSourcesPackage.mkdirs();
 
         if (isPackageCreated) {
-            final var queriesGroupedByRootQuery = new GraphQlToBeanConverter().convert(
+            final var queriesGroupedByRootQuery = graphQlToBeanConverter.convert(
                     graphQlQuery,
                     graphQlSourcesPackageName
             );
@@ -49,9 +57,9 @@ public class GraphQlToBeanMojo extends AbstractMojo {
         }
     }
 
-    private static String loadGraphQlQueryFromFile(final File graphqlQueryFile) {
+    private String loadGraphQlQueryFromFile(final File graphqlQueryFile) {
         try {
-            return Files.readString(graphqlQueryFile.toPath());
+            return Files.readString(Paths.get(graphqlQueryFile.getPath(), graphQlFileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -77,6 +85,6 @@ public class GraphQlToBeanMojo extends AbstractMojo {
 
     private String getSourceFullPath(final File graphQlSourcesPackage,
                                      final String queryName) {
-        return graphQlSourcesPackage + String.valueOf(separatorChar) + queryName + ".java";
+        return graphQlSourcesPackage.getPath() + separatorChar + queryName + ".java";
     }
 }

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.cleverton</groupId>
-    <artifactId>graphql-2-bean-maven-plugin</artifactId>
+    <artifactId>fluent-graphql-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -13,35 +13,40 @@
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <graphql.java.version>17.3</graphql.java.version>
+
+        <maven.plugin.api.version>3.6.3</maven.plugin.api.version>
+        <maven.plugin.annotations.version>3.6.0</maven.plugin.annotations.version>
+        <maven.project.version>2.2.1</maven.project.version>
+        <graphql.java.version>22.2</graphql.java.version>
         <junit.version>5.10.2</junit.version>
         <asserj.version>3.25.3</asserj.version>
+        <build.helper.maven.plugin>3.6.0</build.helper.maven.plugin>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java</artifactId>
-            <version>${graphql.java.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.6.3</version>
+            <version>${maven.plugin.api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.6.0</version>
+            <version>${maven.plugin.annotations.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-project</artifactId>
-            <version>2.2.1</version>
+            <version>${maven.project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java</artifactId>
+            <version>${graphql.java.version}</version>
         </dependency>
 
         <dependency>
@@ -64,7 +69,7 @@
             <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.6.0</version>
+            <version>${build.helper.maven.plugin}</version>
             <executions>
                 <execution>
                     <id>add-source</id>
@@ -80,17 +85,6 @@
                 </execution>
             </executions>
             </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>3.12.1</version>-->
-<!--                <configuration>-->
-<!--                    <source>22</source>-->
-<!--                    <target>22</target>-->
-<!--&lt;!&ndash;                    <generatedSourcesDirectory>${project.build.directory}/generated-sources</generatedSourcesDirectory>&ndash;&gt;-->
-<!--                </configuration>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 </project>
