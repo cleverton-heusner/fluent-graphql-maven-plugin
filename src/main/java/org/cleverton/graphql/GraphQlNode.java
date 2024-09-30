@@ -59,10 +59,10 @@ public class GraphQlNode {
 
     private void addQuerySuffixToParentNode() {
         if (nodeName.equals(rootNodeName)) {
-            nodeName = nodeName + QUERY_SUFFIX;
+            nodeName += QUERY_SUFFIX;
         }
         else if (parentNodeName.equals(rootNodeName)) {
-            parentNodeName = parentNodeName + QUERY_SUFFIX;
+            parentNodeName += QUERY_SUFFIX;
         }
     }
 
