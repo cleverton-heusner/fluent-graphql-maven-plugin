@@ -88,6 +88,18 @@ public class GetPostQuery {
         return this;
     }
 
+    public GetPostQuery ignoreAllFields() {
+        postId = false;
+        postTitle = false;
+        postText = false;
+        postDatePublished = false;
+        postViews = false;
+        postLikes = false;
+        comments.ignoreAllFields();
+        popularity.ignoreAllFields();
+        return this;
+    }
+
     public Comments fromComments() {
         return comments;
     }

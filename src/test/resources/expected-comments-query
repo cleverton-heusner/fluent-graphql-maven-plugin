@@ -51,6 +51,14 @@ public class Comments {
         return this;
     }
 
+    public Comments ignoreAllFields() {
+        commentsId = false;
+        commentsText = false;
+        commentsDatePublished = false;
+        author.ignoreAllFields();
+        return this;
+    }
+
     public Author fromAuthor() {
         return author;
     }

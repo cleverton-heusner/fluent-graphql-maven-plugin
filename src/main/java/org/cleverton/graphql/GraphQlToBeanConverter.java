@@ -78,6 +78,7 @@ public class GraphQlToBeanConverter {
                 .addLeafNodeSelectorMethods()
                 .addLeafNodeSkipperMethods()
                 .addAllNodesSelectorMethod()
+                .addAllNodesSkipperMethod()
                 .addSubTreeSelectorMethod()
                 .addNodeSelectionEndMethod()
                 .render();

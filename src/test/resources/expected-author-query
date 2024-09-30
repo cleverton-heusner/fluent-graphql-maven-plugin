@@ -75,6 +75,16 @@ public class Author {
         return this;
     }
 
+    public Author ignoreAllFields() {
+        authorId = false;
+        authorName = false;
+        authorEmail = false;
+        authorProfilePicture = false;
+        authorJoinedDate = false;
+        friends.ignoreAllFields();
+        return this;
+    }
+
     public Friends fromFriends() {
         return friends;
     }

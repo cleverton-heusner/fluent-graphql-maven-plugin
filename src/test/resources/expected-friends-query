@@ -51,6 +51,14 @@ public class Friends {
         return this;
     }
 
+    public Friends ignoreAllFields() {
+        friendsId = false;
+        friendsName = false;
+        friendsProfilePicture = false;
+        mutualFriends.ignoreAllFields();
+        return this;
+    }
+
     public MutualFriends fromMutualFriends() {
         return mutualFriends;
     }

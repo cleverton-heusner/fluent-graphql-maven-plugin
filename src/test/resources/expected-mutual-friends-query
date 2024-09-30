@@ -36,6 +36,12 @@ public class MutualFriends {
         return this;
     }
 
+    public MutualFriends ignoreAllFields() {
+        mutualFriendsId = false;
+        mutualFriendsName = false;
+        return this;
+    }
+
     public Friends endMutualFriendsSelection() {
         return friends;
     }

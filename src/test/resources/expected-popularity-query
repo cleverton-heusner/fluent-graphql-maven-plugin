@@ -36,6 +36,12 @@ public class Popularity {
         return this;
     }
 
+    public Popularity ignoreAllFields() {
+        likes = false;
+        dislikes = false;
+        return this;
+    }
+
     public GetPostQuery endPopularitySelection() {
         return getPostQuery;
     }
