@@ -189,13 +189,22 @@ public class GraphQlNode {
         return this;
     }
 
-    public GraphQlNode endNodeSelection() {
+    public GraphQlNode addNodeSelectionEndMethod() {
         if (hasParentNode()) {
             classBuilder.addMethod(new Method.Builder()
                     .addPublicModifier()
                     .returns(parentNodeName)
                     .named("end" + capitalize(nodeName) + "Selection")
                     .addStatementReturning(parentNodeName)
+                    .build()
+            );
+        }
+        else {
+            classBuilder.addMethod(new Method.Builder()
+                    .addPublicModifier()
+                    .returns(nodeName)
+                    .named("endSelection")
+                    .addStatementReturning(THIS)
                     .build()
             );
         }

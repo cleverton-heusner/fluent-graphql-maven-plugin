@@ -95,4 +95,8 @@ public class GetPostQuery {
     public Popularity fromPopularity() {
         return popularity;
     }
+
+    public GetPostQuery endSelection() {
+        return this;
+    }
 }
