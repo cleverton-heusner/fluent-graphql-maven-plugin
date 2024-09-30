@@ -21,6 +21,9 @@ public class GraphQlNode {
     private static final String SELECT_ALL_FIELDS_WITHOUT_PARAMS = SELECT_ALL_FIELDS + "()";
     private static final String IGNORE_ALL_FIELDS = "ignoreAllFields";
     private static final String IGNORE_ALL_FIELDS_WITHOUT_PARAMS = IGNORE_ALL_FIELDS + "()";
+    private static final String END = "end";
+    private static final String SELECTION = "Selection";
+    private static final String END_SELECTION = END + SELECTION;
 
     private String nodeName;
     private String parentNodeName;
@@ -190,11 +193,11 @@ public class GraphQlNode {
 
         if (hasParentNode()) {
             builder.withReturn(parentNodeName)
-                    .withName("end" + capitalize(nodeName) + "Selection")
+                    .withName(END + capitalize(nodeName) + SELECTION)
                     .withStatementReturning(parentNodeName);
         }
         else {
-            builder.withReturn(nodeName).withName("endSelection").withStatementReturning(THIS);
+            builder.withReturn(nodeName).withName(END_SELECTION).withStatementReturning(THIS);
         }
 
         classBuilder.addMethod(builder.build());
