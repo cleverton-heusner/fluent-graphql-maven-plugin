@@ -19,17 +19,17 @@ public class Field {
             this.field = new Field();
         }
 
-        public Builder named(final String name) {
+        public Builder withName(final String name) {
             field.name = name;
             return this;
         }
 
-        public Builder addPrivateModifier() {
+        public Builder withPrivateModifier() {
             field.modifier = "private";
             return this;
         }
 
-        public Builder addPrivateFinalModifier() {
+        public Builder withPrivateFinalModifier() {
             field.modifier = "private final";
             return this;
         }

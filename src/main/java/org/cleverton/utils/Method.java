@@ -25,21 +25,21 @@ public class Method {
             this.method = new Method();
         }
 
-        public Builder named(final String name) {
+        public Builder withName(final String name) {
             method.name = name;
             return this;
         }
 
-        public Builder noParams() {
+        public Builder withoutParams() {
             return this;
         }
 
-        public Builder returns(final String returnName) {
+        public Builder withReturn(final String returnName) {
             method.returns = capitalize(returnName);
             return this;
         }
 
-        public Builder addStatement(final String statement) {
+        public Builder withStatement(final String statement) {
             method.statements.append("\n")
                     .append(DOUBLE_INDENTATION.getValue())
                     .append(statement)
@@ -47,7 +47,7 @@ public class Method {
             return this;
         }
 
-        public Builder addStatement(final String var, final String val) {
+        public Builder withStatement(final String var, final String val) {
             method.statements.append("\n")
                     .append(DOUBLE_INDENTATION.getValue())
                     .append(var)
@@ -57,7 +57,7 @@ public class Method {
             return this;
         }
 
-        public Builder addStatementReturning(final String statement) {
+        public Builder withStatementReturning(final String statement) {
             method.statements.append("\n")
                     .append(DOUBLE_INDENTATION.getValue())
                     .append("return ")
@@ -66,7 +66,7 @@ public class Method {
             return this;
         }
 
-        public Builder addPublicModifier() {
+        public Builder withPublicModifier() {
             method.modifier = "public";
             return this;
         }

@@ -51,7 +51,7 @@ public class GraphQlToBeanConverter {
 
                     graphQlNode.addSubTree(graphQlQueryNode.getName());
                     graphQlNode.getConstructorBuilder()
-                            .addStatement(graphQlQueryNode.getName() +
+                            .withStatement(graphQlQueryNode.getName() +
                                     " = new " +
                                     capitalize(graphQlQueryNode.getName()) +
                                     "(this)"

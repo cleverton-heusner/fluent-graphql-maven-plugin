@@ -47,7 +47,7 @@ public class GraphQlNode {
         constructorBuilder = createConstructorBuilder();
 
         if (hasParentNode()) {
-            constructorBuilder.addStatement(
+            constructorBuilder.withStatement(
                     THIS + "." + this.parentNodeName,
                     this.parentNodeName
             );
@@ -73,9 +73,9 @@ public class GraphQlNode {
 
     private Method.Builder createConstructorBuilder() {
         return new Method.Builder()
-                .addPublicModifier()
+                .withPublicModifier()
                 .withParams(this.parentNodeName)
-                .named(this.nodeName);
+                .withName(this.nodeName);
     }
 
     public Method.Builder getConstructorBuilder() {
@@ -100,10 +100,11 @@ public class GraphQlNode {
     }
 
     private void addNodeWithDescendants(final String nodeName) {
-        classBuilder.addField(new Field.Builder().addPrivateFinalModifier()
+        classBuilder.addField(new Field.Builder().withPrivateFinalModifier()
                 .withType(nodeName)
-                .named(nodeName)
-                .build());
+                .withName(nodeName)
+                .build()
+        );
     }
 
     public boolean hasParentNode() {
@@ -111,22 +112,21 @@ public class GraphQlNode {
     }
 
     public void addLeafNode(final String leafNodeName) {
-        classBuilder.addField(new Field.Builder()
-                .addPrivateModifier()
+        classBuilder.addField(new Field.Builder().withPrivateModifier()
                 .withBooleanType()
-                .named(leafNodeName)
+                .withName(leafNodeName)
                 .build());
         leafNodeNames.add(leafNodeName);
     }
 
     public GraphQlNode addLeafNodeSelectorMethods() {
-        leafNodeNames.forEach(leafNodeName -> classBuilder.addMethod(new Method.Builder()
-                        .addPublicModifier()
-                        .returns(nodeName)
-                        .named("select" + capitalize(leafNodeName))
-                        .noParams()
-                        .addStatement(leafNodeName, TRUE)
-                        .addStatementReturning(THIS)
+        leafNodeNames.forEach(leafNodeName -> classBuilder.addMethod(
+                new Method.Builder().withPublicModifier()
+                        .withReturn(nodeName)
+                        .withName("select" + capitalize(leafNodeName))
+                        .withoutParams()
+                        .withStatement(leafNodeName, TRUE)
+                        .withStatementReturning(THIS)
                         .build()
                 )
         );
@@ -136,12 +136,12 @@ public class GraphQlNode {
 
     public GraphQlNode addLeafNodeSkipperMethods() {
         leafNodeNames.forEach(leafNodeName -> classBuilder.addMethod(new Method.Builder()
-                        .addPublicModifier()
-                        .returns(nodeName)
-                        .named("skip" + capitalize(leafNodeName))
-                        .noParams()
-                        .addStatement(leafNodeName, "false")
-                        .addStatementReturning(THIS)
+                        .withPublicModifier()
+                        .withReturn(nodeName)
+                        .withName("skip" + capitalize(leafNodeName))
+                        .withoutParams()
+                        .withStatement(leafNodeName, "false")
+                        .withStatementReturning(THIS)
                         .build()
                 )
         );
@@ -151,19 +151,19 @@ public class GraphQlNode {
 
     public GraphQlNode addAllNodesSelectorMethod() {
         final var builder = new Method.Builder()
-                .addPublicModifier()
-                .returns(nodeName)
-                .named(SELECT_ALL_FIELDS)
-                .noParams();
+                .withPublicModifier()
+                .withReturn(nodeName)
+                .withName(SELECT_ALL_FIELDS)
+                .withoutParams();
 
-        leafNodeNames.forEach(nodeName -> builder.addStatement(nodeName, TRUE));
-        subTreesNames.forEach(subTreeName -> builder.addStatement(
+        leafNodeNames.forEach(nodeName -> builder.withStatement(nodeName, TRUE));
+        subTreesNames.forEach(subTreeName -> builder.withStatement(
                 subTreeName +
                 "." +
                 SELECT_ALL_FIELDS_WITH_PARAMS)
         );
 
-        classBuilder.addMethod(builder.addStatementReturning(THIS)
+        classBuilder.addMethod(builder.withStatementReturning(THIS)
                 .build()
         );
 
@@ -173,10 +173,10 @@ public class GraphQlNode {
     public GraphQlNode addSubTreeSelectorMethod() {
         subTreesNames.forEach(subTreesName ->
                         classBuilder.addMethod(new Method.Builder()
-                                .addPublicModifier()
-                                .returns(subTreesName)
-                                .named("from" + capitalize(subTreesName))
-                                .addStatementReturning(subTreesName)
+                                .withPublicModifier()
+                                .withReturn(subTreesName)
+                                .withName("from" + capitalize(subTreesName))
+                                .withStatementReturning(subTreesName)
                                 .build()
                         )
         );
@@ -190,25 +190,20 @@ public class GraphQlNode {
     }
 
     public GraphQlNode addNodeSelectionEndMethod() {
+        final var builder = new Method.Builder().withPublicModifier();
+
         if (hasParentNode()) {
-            classBuilder.addMethod(new Method.Builder()
-                    .addPublicModifier()
-                    .returns(parentNodeName)
-                    .named("end" + capitalize(nodeName) + "Selection")
-                    .addStatementReturning(parentNodeName)
-                    .build()
-            );
+            builder.withReturn(parentNodeName)
+                    .withName("end" + capitalize(nodeName) + "Selection")
+                    .withStatementReturning(parentNodeName);
         }
         else {
-            classBuilder.addMethod(new Method.Builder()
-                    .addPublicModifier()
-                    .returns(nodeName)
-                    .named("endSelection")
-                    .addStatementReturning(THIS)
-                    .build()
-            );
+            builder.withReturn(nodeName)
+                    .withName("endSelection")
+                    .withStatementReturning(THIS);
         }
 
+        classBuilder.addMethod(builder.build());
         return this;
     }
 
